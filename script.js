@@ -12,19 +12,19 @@ function startGame(puzzleSize) {
 }
 
 function createPuzzle() {
-  const tileWidth = imageWidth / size;
-  const tileHeight = imageHeight / size;
+  const tileWidth = imageWidth / Math.sqrt(size);
+  const tileHeight = imageHeight / Math.sqrt(size);
 
-  document.getElementById('puzzle-container').style.gridTemplateColumns = `repeat(${size}, ${tileWidth}px)`;
-  document.getElementById('puzzle-container').style.gridTemplateRows = `repeat(${size}, ${tileHeight}px)`;
+  document.getElementById('puzzle-container').style.gridTemplateColumns = `repeat(${Math.sqrt(size)}, ${tileWidth}px)`;
+  document.getElementById('puzzle-container').style.gridTemplateRows = `repeat(${Math.sqrt(size)}, ${tileHeight}px)`;
 
-  for (let i = 0; i < size * size; i++) {
+  for (let i = 0; i < size; i++) {
     const tile = document.createElement('div');
     tile.classList.add('tile');
     
-    if (i !== size * size - 1) {
-      const row = Math.floor(i / size);
-      const col = i % size;
+    if (i !== size - 1) {
+      const row = Math.floor(i / Math.sqrt(size));
+      const col = i % Math.sqrt(size);
       tile.style.backgroundImage = `url(${imageSrc})`;
       tile.style.backgroundSize = `${imageWidth}px ${imageHeight}px`;
       tile.style.backgroundPosition = `-${col * tileWidth}px -${row * tileHeight}px`;
@@ -42,17 +42,17 @@ function createPuzzle() {
 }
 
 function shufflePuzzle() {
-  let order = Array.from(Array(size * size).keys());
+  let order = Array.from(Array(size).keys());
   order = shuffle(order);
 
   tiles.forEach((tile, index) => {
     tile.setAttribute('data-index', order[index]);
-    const rowIndex = Math.floor(order[index] / size);
-    const colIndex = order[index] % size;
-    tile.style.backgroundPosition = `-${colIndex * (imageWidth / size)}px -${rowIndex * (imageHeight / size)}px`;
+    const rowIndex = Math.floor(order[index] / Math.sqrt(size));
+    const colIndex = order[index] % Math.sqrt(size);
+    tile.style.backgroundPosition = `-${colIndex * (imageWidth / Math.sqrt(size))}px -${rowIndex * (imageHeight / Math.sqrt(size))}px`;
     tile.style.gridRow = rowIndex + 1;
     tile.style.gridColumn = colIndex + 1;
-    if (index === size * size - 1) tile.classList.add('empty');
+    if (index === size - 1) tile.classList.add('empty');
   });
 }
 
@@ -66,22 +66,22 @@ function shuffle(arr) {
 
 function moveTile(index) {
   const emptyIndex = tiles.findIndex(tile => tile.classList.contains('empty'));
-  const validMoves = [-1, 1, -size, size];
+  const validMoves = [-1, 1, -Math.sqrt(size), Math.sqrt(size)];
 
   validMoves.forEach(offset => {
     const targetIndex = index + offset;
 
-    if (targetIndex >= 0 && targetIndex < size * size) {
-      const row = Math.floor(targetIndex / size);
-      const col = targetIndex % size;
+    if (targetIndex >= 0 && targetIndex < size) {
+      const row = Math.floor(targetIndex / Math.sqrt(size));
+      const col = targetIndex % Math.sqrt(size);
 
-      if ((offset === -1 || offset === 1) && Math.floor(index / size) === row) {
+      if ((offset === -1 || offset === 1) && Math.floor(index / Math.sqrt(size)) === row) {
         if (targetIndex === emptyIndex) {
           swapTiles(index, emptyIndex);
         }
       }
 
-      if ((offset === -size || offset === size) && Math.floor(index / size) !== row) {
+      if ((offset === -Math.sqrt(size) || offset === Math.sqrt(size)) && Math.floor(index / Math.sqrt(size)) !== row) {
         if (targetIndex === emptyIndex) {
           swapTiles(index, emptyIndex);
         }
