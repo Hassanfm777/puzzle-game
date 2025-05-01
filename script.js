@@ -31,19 +31,39 @@ function createPuzzle() {
 
 function moveTile(index) {
   const emptyIndex = tiles.findIndex(tile => tile.classList.contains('empty'));
-  const validMoves = [-1, 1, -size, size];
+  
+  const validMoves = [
+    -1, 1, -size, size
+  ];
 
   validMoves.forEach(offset => {
     const targetIndex = index + offset;
 
-    if (targetIndex === emptyIndex) {
-      [tiles[index].style.backgroundImage, tiles[emptyIndex].style.backgroundImage] = 
-      [tiles[emptyIndex].style.backgroundImage, tiles[index].style.backgroundImage];
+    if (targetIndex >= 0 && targetIndex < size * size) {
+      const row = Math.floor(targetIndex / size);
+      const col = targetIndex % size;
+      
+      if ((offset === -1 || offset === 1) && Math.floor(index / size) === row) {
+        if (targetIndex === emptyIndex) {
+          swapTiles(index, emptyIndex);
+        }
+      }
 
-      tiles[index].classList.toggle('empty');
-      tiles[emptyIndex].classList.toggle('empty');
+      if ((offset === -size || offset === size) && Math.floor(index / size) !== row) {
+        if (targetIndex === emptyIndex) {
+          swapTiles(index, emptyIndex);
+        }
+      }
     }
   });
+}
+
+function swapTiles(index1, index2) {
+  [tiles[index1].style.backgroundImage, tiles[index2].style.backgroundImage] = 
+  [tiles[index2].style.backgroundImage, tiles[index1].style.backgroundImage];
+  
+  tiles[index1].classList.toggle('empty');
+  tiles[index2].classList.toggle('empty');
 }
 
 createPuzzle();
