@@ -74,6 +74,17 @@ function swapTiles(index1, index2) {
   const tempIndex = tiles[index1].getAttribute('data-index');
   tiles[index1].setAttribute('data-index', tiles[index2].getAttribute('data-index'));
   tiles[index2].setAttribute('data-index', tempIndex);
+
+  updateGridLayout();
+}
+
+function updateGridLayout() {
+  tiles.forEach((tile, index) => {
+    const row = Math.floor(index / size);
+    const col = index % size;
+    tile.style.gridRow = row + 1;
+    tile.style.gridColumn = col + 1;
+  });
 }
 
 createPuzzle();
