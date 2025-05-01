@@ -1,6 +1,8 @@
 let size = 4;
 let tiles = [];
 const imageSrc = 'assets/image.jpg';
+const imageWidth = 400;
+const imageHeight = 400;
 
 function startGame(puzzleSize) {
   size = puzzleSize;
@@ -10,10 +12,10 @@ function startGame(puzzleSize) {
 }
 
 function createPuzzle() {
-  const imageWidth = 400;
-  const imageHeight = 400;
   const tileWidth = imageWidth / size;
   const tileHeight = imageHeight / size;
+
+  document.getElementById('puzzle-container').style.gridTemplateColumns = `repeat(${size}, ${tileWidth}px)`;
 
   for (let i = 0; i < size * size; i++) {
     const tile = document.createElement('div');
@@ -34,7 +36,6 @@ function createPuzzle() {
     document.getElementById('puzzle-container').appendChild(tile);
   }
 
-  setGridLayout();
   shufflePuzzle();
 }
 
@@ -44,13 +45,11 @@ function shufflePuzzle() {
 
   tiles.forEach((tile, index) => {
     tile.setAttribute('data-index', order[index]);
-    const row = Math.floor(index / size);
-    const col = index % size;
     const rowIndex = Math.floor(order[index] / size);
     const colIndex = order[index] % size;
-    tile.style.backgroundPosition = `-${colIndex * 100}px -${rowIndex * 100}px`;
-    tile.style.gridRow = row + 1;
-    tile.style.gridColumn = col + 1;
+    tile.style.backgroundPosition = `-${colIndex * (imageWidth / size)}px -${rowIndex * (imageHeight / size)}px`;
+    tile.style.gridRow = rowIndex + 1;
+    tile.style.gridColumn = colIndex + 1;
     if (index === size * size - 1) tile.classList.add('empty');
   });
 }
@@ -105,10 +104,4 @@ function swapTiles(index1, index2) {
   const tempIndex = tiles[index1].getAttribute('data-index');
   tiles[index1].setAttribute('data-index', tiles[index2].getAttribute('data-index'));
   tiles[index2].setAttribute('data-index', tempIndex);
-
-  setGridLayout();
-}
-
-function setGridLayout() {
-  document.getElementById('puzzle-container').style.gridTemplateColumns = `repeat(${size}, 100px)`;
 }

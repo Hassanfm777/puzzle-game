@@ -46,8 +46,6 @@ h1 {
 }
 
 .tile {
-  width: 100px;
-  height: 100px;
   background-color: #ddd;
   display: flex;
   justify-content: center;
