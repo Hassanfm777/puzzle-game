@@ -30,6 +30,7 @@ function createPuzzle() {
       tile.style.backgroundPosition = `-${col * tileWidth}px -${row * tileHeight}px`;
       tile.setAttribute('data-index', i);
       tile.addEventListener('click', () => moveTile(i));
+      tile.style.clipPath = generateJigsawClipPath(col, row);
     } else {
       tile.classList.add('empty');
     }
@@ -106,4 +107,17 @@ function swapTiles(index1, index2) {
   const tempIndex = tiles[index1].getAttribute('data-index');
   tiles[index1].setAttribute('data-index', tiles[index2].getAttribute('data-index'));
   tiles[index2].setAttribute('data-index', tempIndex);
+}
+
+function generateJigsawClipPath(col, row) {
+  const indent = 10;
+  let clipPath = '';
+
+  if (row === 0) {
+    clipPath += `polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)`;
+  } else {
+    clipPath += `polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)`;
+  }
+
+  return clipPath;
 }
