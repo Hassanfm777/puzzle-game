@@ -96,28 +96,4 @@ function swapTiles(index1, index2) {
   const tempPos = tiles[index1].style.backgroundPosition;
 
   tiles[index1].style.backgroundImage = tiles[index2].style.backgroundImage;
-  tiles[index1].style.backgroundPosition = tiles[index2].style.backgroundPosition;
-
-  tiles[index2].style.backgroundImage = tempBg;
-  tiles[index2].style.backgroundPosition = tempPos;
-
-  tiles[index1].classList.toggle('empty');
-  tiles[index2].classList.toggle('empty');
-
-  const tempIndex = tiles[index1].getAttribute('data-index');
-  tiles[index1].setAttribute('data-index', tiles[index2].getAttribute('data-index'));
-  tiles[index2].setAttribute('data-index', tempIndex);
-}
-
-function generateJigsawClipPath(col, row) {
-  const indent = 10;
-  let clipPath = '';
-
-  if (row === 0) {
-    clipPath += `polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)`;
-  } else {
-    clipPath += `polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)`;
-  }
-
-  return clipPath;
-}
+  tiles[index1].
