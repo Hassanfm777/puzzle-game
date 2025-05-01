@@ -1,4 +1,4 @@
-let size = 4;
+let size = 100;
 let tiles = [];
 const imageSrc = 'assets/image.jpg';
 const imageWidth = 400;
