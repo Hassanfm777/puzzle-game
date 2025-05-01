@@ -1,7 +1,13 @@
-const puzzleContainer = document.getElementById('puzzle-container');
-const size = 4;
+let size = 4;
 let tiles = [];
 const imageSrc = 'assets/image.jpg';
+
+function startGame(puzzleSize) {
+  size = puzzleSize;
+  tiles = [];
+  document.getElementById('puzzle-container').innerHTML = '';
+  createPuzzle();
+}
 
 function createPuzzle() {
   const imageWidth = 400;
@@ -25,16 +31,41 @@ function createPuzzle() {
     }
 
     tiles.push(tile);
-    puzzleContainer.appendChild(tile);
+    document.getElementById('puzzle-container').appendChild(tile);
   }
+
+  setGridLayout();
+  shufflePuzzle();
+}
+
+function shufflePuzzle() {
+  let order = Array.from(Array(size * size).keys());
+  order = shuffle(order);
+
+  tiles.forEach((tile, index) => {
+    tile.setAttribute('data-index', order[index]);
+    const row = Math.floor(index / size);
+    const col = index % size;
+    const rowIndex = Math.floor(order[index] / size);
+    const colIndex = order[index] % size;
+    tile.style.backgroundPosition = `-${colIndex * 100}px -${rowIndex * 100}px`;
+    tile.style.gridRow = row + 1;
+    tile.style.gridColumn = col + 1;
+    if (index === size * size - 1) tile.classList.add('empty');
+  });
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
 }
 
 function moveTile(index) {
   const emptyIndex = tiles.findIndex(tile => tile.classList.contains('empty'));
-  
-  const validMoves = [
-    -1, 1, -size, size
-  ];
+  const validMoves = [-1, 1, -size, size];
 
   validMoves.forEach(offset => {
     const targetIndex = index + offset;
@@ -75,16 +106,9 @@ function swapTiles(index1, index2) {
   tiles[index1].setAttribute('data-index', tiles[index2].getAttribute('data-index'));
   tiles[index2].setAttribute('data-index', tempIndex);
 
-  updateGridLayout();
+  setGridLayout();
 }
 
-function updateGridLayout() {
-  tiles.forEach((tile, index) => {
-    const row = Math.floor(index / size);
-    const col = index % size;
-    tile.style.gridRow = row + 1;
-    tile.style.gridColumn = col + 1;
-  });
+function setGridLayout() {
+  document.getElementById('puzzle-container').style.gridTemplateColumns = `repeat(${size}, 100px)`;
 }
-
-createPuzzle();
