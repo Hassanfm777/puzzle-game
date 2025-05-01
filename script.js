@@ -30,7 +30,6 @@ function createPuzzle() {
       tile.style.backgroundPosition = `-${col * tileWidth}px -${row * tileHeight}px`;
       tile.setAttribute('data-index', i);
       tile.addEventListener('click', () => moveTile(i));
-      tile.style.clipPath = generateJigsawClipPath(col, row);
     } else {
       tile.classList.add('empty');
     }
