@@ -16,3 +16,7 @@
   cursor: pointer;
   font-size: 24px;
 }
+
+.tile.empty {
+  visibility: hidden;
+}

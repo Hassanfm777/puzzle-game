@@ -12,7 +12,7 @@ function createPuzzle() {
   for (let i = 0; i < size * size; i++) {
     const tile = document.createElement('div');
     tile.classList.add('tile');
-
+    
     if (i !== size * size - 1) {
       const row = Math.floor(i / size);
       const col = i % size;
@@ -20,6 +20,8 @@ function createPuzzle() {
       tile.style.backgroundPosition = `-${col * tileWidth}px -${row * tileHeight}px`;
       tile.setAttribute('data-index', i);
       tile.addEventListener('click', () => moveTile(i));
+    } else {
+      tile.classList.add('empty');
     }
 
     tiles.push(tile);
@@ -28,15 +30,13 @@ function createPuzzle() {
 }
 
 function moveTile(index) {
-  const emptyIndex = tiles.findIndex(tile => tile.textContent === '');
-  const validMoves = [
-    -1, 1, -size, size
-  ];
+  const emptyIndex = tiles.findIndex(tile => tile.classList.contains('empty'));
+  const validMoves = [-1, 1, -size, size];
 
   validMoves.forEach(offset => {
     const targetIndex = index + offset;
+
     if (targetIndex === emptyIndex) {
-      [tiles[index].textContent, tiles[emptyIndex].textContent] = [tiles[emptyIndex].textContent, tiles[index].textContent];
       [tiles[index].style.backgroundImage, tiles[emptyIndex].style.backgroundImage] = 
       [tiles[emptyIndex].style.backgroundImage, tiles[index].style.backgroundImage];
 
