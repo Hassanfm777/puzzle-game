@@ -16,6 +16,7 @@ function createPuzzle() {
   const tileHeight = imageHeight / size;
 
   document.getElementById('puzzle-container').style.gridTemplateColumns = `repeat(${size}, ${tileWidth}px)`;
+  document.getElementById('puzzle-container').style.gridTemplateRows = `repeat(${size}, ${tileHeight}px)`;
 
   for (let i = 0; i < size * size; i++) {
     const tile = document.createElement('div');
@@ -25,6 +26,7 @@ function createPuzzle() {
       const row = Math.floor(i / size);
       const col = i % size;
       tile.style.backgroundImage = `url(${imageSrc})`;
+      tile.style.backgroundSize = `${imageWidth}px ${imageHeight}px`;
       tile.style.backgroundPosition = `-${col * tileWidth}px -${row * tileHeight}px`;
       tile.setAttribute('data-index', i);
       tile.addEventListener('click', () => moveTile(i));
